@@ -1,2 +1,2 @@
 #!/bin/bash
-mv /root/alx-system_engineering-devops/[[:upper:]]* /tmp/u
+mv [[:upper:]]*/alx-system_engineering-devops/ /tmp/u
