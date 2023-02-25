@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-: '
+: "
  a Bash script that gives you information about the school file.
 
 Requirements:
@@ -14,7 +13,7 @@ if the file is empty: school file is empty
 if the file is not empty: school file is not empty
 if the file is a regular file: school is a regular file
 if the file is not a regular file: (nothing)
-'
+"
 
 filename="School"
 
