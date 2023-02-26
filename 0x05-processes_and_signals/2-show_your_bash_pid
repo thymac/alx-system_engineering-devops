@@ -8,7 +8,7 @@ You cannot use pgrep
 The third line of your script must be # shellcheck disable=SC2009 (for more info about ignoring shellcheck error here)
 '
 
-# shellcheck disable=SC2009
+shellcheck disable=SC2009
 
 ps_output=$(ps -ef)
 while read -r line; do
