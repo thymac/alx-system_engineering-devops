@@ -9,17 +9,18 @@ Display in a user-oriented format
 Show process hierarchy
 '
 
-# Print header row
-printf "%-8s %-5s %-5s %-6s %-6s %-5s %-7s %-6s %-11s %s\n" \
-  "USER" "PID" "%CPU" "%MEM" "VSZ" "RSS" "TTY" "STAT" "START" "COMMAND"
-
-# Loop through each process
-while read -r user pid cpu mem vsz rss tty stat start time command; do
-  # Print each process with specified format
-  printf "%-8s %-5s %-5s %-6s %-6s %-5s %-7s %-6s %-11s %s\n" \
-    "$user" "$pid" "$cpu" "$mem" "$vsz" "$rss" "$tty" "$stat" "$start" "$command"
-done < <(ps aux)
-
-# Display process hierarchy
-pstree -p
+printf "%-15s %-6s %-6s %6s %6s %-8s %-9s %s\n" "USER" "PID" "%CPU" "%MEM" "VSZ" "TTY" "STAT" "COMMAND"
+while read line
+do
+    user=$(echo $line | awk '{print $1}')
+    pid=$(echo $line | awk '{print $2}')
+    pcpu=$(echo $line | awk '{printf "%.1f", $3}')
+    pmem=$(echo $line | awk '{printf "%.1f", $4}')
+    vsz=$(echo $line | awk '{print $5}')
+    tty=$(echo $line | awk '{print $6}')
+    stat=$(echo $line | awk '{print $8}')
+    time=$(echo $line | awk '{print $9}')
+    command=$(echo $line | awk '{print $11}')
+    printf "%-15s %-6s %-6s %6s %6s %-8s %-9s %s\n" "$user" "$pid" "$pcpu" "$pmem" "$vsz" "$tty" "$stat" "$command ($time)"
+done < <(ps -eo user,pid,%cpu,%mem,vsz,tty,stat,time,command --sort=-%cpu,-%mem --no-headers)
 
