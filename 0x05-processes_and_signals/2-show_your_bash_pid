@@ -1,19 +1,4 @@
 #!/usr/bin/env bash
-: '
-A bash script that displays lines containing the bash word, thus allowing you to easily get the PID of your Bash process.
-
-Requirements:
-
-You cannot use pgrep
-The third line of your script must be # shellcheck disable=SC2009 (for more info about ignoring shellcheck error here)
-'
-
-shellcheck disable=SC2009
-
-ps_output=$(ps -ef)
-while read -r line; do
-    if echo "$line" | grep -q bash; then
-        echo "$line"
-    fi
-done <<< "$ps_output"
-
+# Bash script that displays a list of currently running processes.
+# shellcheck disable=SC2009
+ps -auxf --forest | grep bash
