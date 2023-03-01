@@ -10,8 +10,8 @@
 
 #You must use the while loop (for and until are forbidden)
 
+file=/etc/passwd
 while IFS=: read username user_id group_id home_dir
 do
-    echo "$username:$user_id:$home_dir"
-done < /etc/passwd
-
+    echo "$username:$user_id:$group_id:$home_dir"
+done < "$file"
