@@ -10,21 +10,16 @@ while [ "$hour" -lt 12 ]
 do
     if [ "$hour" -eq 0 ]
     then
-        echo "Hour: 12"
+        echo "Hour: 0"
     else
         echo "Hour: $hour"
     fi
     
-    minute=0
+    minute=1
     while [ "$minute" -lt 60 ]
     do
-        if [ "$minute" -lt 10 ]
-        then
-            echo "$minute"
-        else
-            echo "$minute"
-        fi
-        ((minute++))
+	echo "$minute"
+    ((minute++))
     done
     ((hour++))
 done
