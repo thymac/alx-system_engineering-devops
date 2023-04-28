@@ -1,6 +1,34 @@
-# automate the task of creating a custom HTTP header response, but with Puppet.
+# Install Nginx
+package { 'nginx':
+  ensure => 'installed',
+}
 
-exec { 'http config':
-  provider => shell,
-  command  => 'sudo apt-get update -y && sudo apt-get install -y nginx && echo "Holberton School" | sudo tee /var/www/html/index.nginx-debian.html && sudo sed -i "19i rewrite ^/redirect_me https://twitter.com/jdrestre permanent;" /etc/nginx/sites-enabled/default && echo "Ceci n\'est pas une page" | sudo tee /usr/share/nginx/html/page_error_404.html && sudo sed -i "37i error_page 404 /page_error_404.html;\nlocation = /page_error_404.html {\nroot /usr/share/nginx/html; \ninternal;\n}" /etc/nginx/sites-enabled/default && sudo service nginx restart',
+# Configure Nginx
+file { '/var/www/html/index.nginx-debian.html':
+  content => "<html><body>Hello World!</body></html>",
+}
+
+file { '/etc/nginx/sites-available/default':
+  content => "server {
+                listen 80 default_server;
+                listen [::]:80 default_server;
+                root /var/www/html;
+                index index.nginx-debian.html;
+                server_name _;
+                location /redirect_me {
+                  return 301 https://twitter.com/jdrestre;
+                }
+              }",
+}
+
+# Enable the site and restart Nginx
+file { '/etc/nginx/sites-enabled/default':
+  ensure => 'link',
+  target => '/etc/nginx/sites-available/default',
+}
+
+service { 'nginx':
+  ensure => 'running',
+  enable => true,
+  require => File['/etc/nginx/sites-enabled/default'],
 }
