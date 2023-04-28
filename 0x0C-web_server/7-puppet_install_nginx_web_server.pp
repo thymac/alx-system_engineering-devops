@@ -1,35 +1,6 @@
-# Install Nginx web server
-class nginx {
-  package { 'nginx':
-    ensure => 'installed',
-  }
+# automate the task of creating a custom HTTP header response, but with Puppet.
 
-  service { 'nginx':
-    ensure  => 'running',
-    enable  => true,
-    require => Package['nginx'],
-  }
-
-  # Set up custom HTTP header response
-  file { '/usr/share/nginx/html/page_error_404.html':
-    ensure  => 'present',
-    content => 'Ceci n\'est pas une page',
-    require => Service['nginx'],
-  }
-
-  file { '/etc/nginx/sites-enabled/default':
-    ensure  => 'present',
-    content => template('nginx/default.erb'),
-    require => Service['nginx'],
-  }
-}
-
-class { 'nginx': }
-
-# Set up 301 redirect
-nginx::resource::location { 'redirect_me':
-  location   => '^/redirect_me$',
-  ensure     => 'present',
-  destination => 'https://twitter.com/jdrestre',
-  status     => '301',
+exec { 'http config':
+  provider => shell,
+  command  => 'sudo apt-get update -y && sudo apt-get install -y nginx && echo "Holberton School" | sudo tee /var/www/html/index.nginx-debian.html && sudo sed -i "19i rewrite ^/redirect_me https://twitter.com/jdrestre permanent;" /etc/nginx/sites-enabled/default && echo "Ceci n\'est pas une page" | sudo tee /usr/share/nginx/html/page_error_404.html && sudo sed -i "37i error_page 404 /page_error_404.html;\nlocation = /page_error_404.html {\nroot /usr/share/nginx/html; \ninternal;\n}" /etc/nginx/sites-enabled/default && sudo service nginx restart',
 }
