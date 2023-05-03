@@ -1,38 +1,51 @@
-# Install Nginx package
-package { 'nginx':
-  ensure => installed,
+class nginx_hello_world {
+  package { 'nginx':
+    ensure => installed,
+  }
+
+  service { 'nginx':
+    ensure => running,
+    enable => true,
+  }
+
+  file { '/var/www/html/index.html':
+    ensure  => file,
+    content => "Hello World!\n",
+  }
+
+  file { '/etc/nginx/sites-available/default':
+    ensure  => file,
+    content => "
+      server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        return 301 https://$host$request_uri;
+      }
+
+      server {
+        listen 443 ssl default_server;
+        listen [::]:443 ssl default_server;
+        ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem;
+        ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
+        root /var/www/html;
+        index index.html;
+        server_name _;
+        location / {
+          try_files $uri $uri/ =404;
+        }
+      }
+    ",
+  }
+
+  file { '/etc/nginx/sites-enabled/default':
+    ensure => 'link',
+    target => '/etc/nginx/sites-available/default',
+  }
+
+  exec { 'nginx-reload':
+    command     => '/usr/sbin/service nginx reload',
+    refreshonly => true,
+  }
 }
 
-# Ensure Nginx service is running and enabled
-service { 'nginx':
-  ensure => running,
-  enable => true,
-}
-
-# Configure Nginx server
-file { '/etc/nginx/sites-available/default':
-  content => template('nginx.conf.erb'),
-  owner   => 'root',
-  group   => 'root',
-  mode    => '0644',
-  notify  => Service['nginx'],
-}
-
-# Create custom 404 page
-file { '/usr/share/nginx/html/404.html':
-  ensure  => present,
-  content => 'Ceci n\'est pas une page',
-  owner   => 'root',
-  group   => 'root',
-  mode    => '0644',
-}
-
-# Redirect /redirect_me to /new_location with a 301 redirect
-nginx::resource::location { 'redirect_me':
-  ensure    => present,
-  location  => '/redirect_me',
-  content   => 'return 301 /new_location;',
-  server    => 'localhost',
-  server_ip => '127.0.0.1',
-  require   => File['/etc/nginx/sites-available/default'],
-}
+include nginx_hello_world
