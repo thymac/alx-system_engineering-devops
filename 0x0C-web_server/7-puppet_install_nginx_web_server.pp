@@ -19,7 +19,7 @@ class nginx_hello_world {
       server {
         listen 80 default_server;
         listen [::]:80 default_server;
-        return 301 https://$host$request_uri;
+        return 301 \"https://$server_name$request_uri\";
       }
 
       server {
@@ -30,6 +30,9 @@ class nginx_hello_world {
         root /var/www/html;
         index index.html;
         server_name _;
+        location /redirect_me {
+          return 301 \"https://$server_name/\";
+        }
         location / {
           try_files $uri $uri/ =404;
         }
