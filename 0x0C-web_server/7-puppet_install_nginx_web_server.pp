@@ -1,34 +1,38 @@
-# Install Nginx
+# Install Nginx package
 package { 'nginx':
-  ensure => 'installed',
+  ensure => installed,
 }
 
-# Configure Nginx
-file { '/var/www/html/index.nginx-debian.html':
-  content => "<html><body>Hello World!</body></html>",
-}
-
-file { '/etc/nginx/sites-available/default':
-  content => "server {
-                listen 80 default_server;
-                listen [::]:80 default_server;
-                root /var/www/html;
-                index index.nginx-debian.html;
-                server_name _;
-                location /redirect_me {
-                  return 301 https://twitter.com/jdrestre;
-                }
-              }",
-}
-
-# Enable the site and restart Nginx
-file { '/etc/nginx/sites-enabled/default':
-  ensure => 'link',
-  target => '/etc/nginx/sites-available/default',
-}
-
+# Ensure Nginx service is running and enabled
 service { 'nginx':
-  ensure => 'running',
+  ensure => running,
   enable => true,
-  require => File['/etc/nginx/sites-enabled/default'],
+}
+
+# Configure Nginx server
+file { '/etc/nginx/sites-available/default':
+  content => template('nginx.conf.erb'),
+  owner   => 'root',
+  group   => 'root',
+  mode    => '0644',
+  notify  => Service['nginx'],
+}
+
+# Create custom 404 page
+file { '/usr/share/nginx/html/404.html':
+  ensure  => present,
+  content => 'Ceci n\'est pas une page',
+  owner   => 'root',
+  group   => 'root',
+  mode    => '0644',
+}
+
+# Redirect /redirect_me to /new_location with a 301 redirect
+nginx::resource::location { 'redirect_me':
+  ensure    => present,
+  location  => '/redirect_me',
+  content   => 'return 301 /new_location;',
+  server    => 'localhost',
+  server_ip => '127.0.0.1',
+  require   => File['/etc/nginx/sites-available/default'],
 }
