@@ -1,18 +1,12 @@
 #!/usr/bin/env bash
 #This script installs and configures Nginx on an Ubuntu server
-
-#Install Nginx if it's not already installed
 if ! dpkg -s nginx > /dev/null 2>&1; then
     apt-get update
     apt-get install -y nginx
 fi
-
-#Test Nginx configuration
 if ! nginx -t > /dev/null 2>&1; then
     echo "Nginx configuration test failed. Please check your Nginx configuration."
     exit 1
 fi
-
-#Reload Nginx if the configuration test passed
 nginx -s reload
 
