@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
-#This script installs and configures Nginx on an Ubuntu server
-if ! dpkg -s nginx > /dev/null 2>&1; then
-    apt-get update
-    apt-get install -y nginx
-fi
-if ! nginx -t > /dev/null 2>&1; then
-    echo "Nginx configuration test failed. Please check your Nginx configuration."
-    exit 1
-fi
-nginx -s reload
-
+# A Bash script to fix Ubuntu's Nginx installation from listening on port 80
+rm /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx restart

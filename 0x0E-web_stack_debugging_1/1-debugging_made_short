@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script installs and starts Nginx
-apt-get update
-apt-get install -y nginx
-/usr/sbin/service nginx status | grep -q "not running" && /usr/sbin/service nginx start
+# change nginx server to listen on port 80 and restart
+
+sed -i "s/8080/80/g" /etc/nginx/sites-enabled/default
+service nginx restart
