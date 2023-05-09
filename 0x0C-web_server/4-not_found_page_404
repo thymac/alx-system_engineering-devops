@@ -7,7 +7,11 @@ sudo apt-get install -y nginx
 #Create the custom 404 page
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
-# Configure Nginx to use the custom 404 page
+#Configure Nginx to use the custom 404 page
 sudo sed -i '/# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000/a\    error_page 404 /404.html;\n    location = /404.html {\n        internal;\n        root /var/www/html;\n        echo "Ceci n'"'"'est pas une page";\n    }' /etc/nginx/sites-available/default
 
+#Create a symlink to enable the site
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
 sudo service nginx restart
+
