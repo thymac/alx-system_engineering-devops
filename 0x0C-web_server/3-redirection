@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-#Install nginx & configure
+#Editing the default config file
 
-sudo apt-get update
-sudo apt-get -y install nginx
-
-sudo sed -i "/listen 80 default_server;/a rewrite ^/redirect_me https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/ permanent;" /etc/nginx/sites-available/default
-
+sudo sed -i '/server_name _;/a \	location /redirect_me {\n		return 301 https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/;\n	}' /etc/nginx/sites-available/default
 sudo service nginx restart

@@ -1,17 +1,9 @@
 #!/usr/bin/env bash
-#Configure your Nginx server to have a custom 404 page that contains the string Ceci n'est pas une page
-
-sudo apt-get update -y
-sudo apt-get install -y nginx
-
-#Create the custom 404 page
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
-
-#Configure Nginx to use the custom 404 page
-sudo sed -i '/# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000/a\    error_page 404 /404.html;\n    location = /404.html {\n        internal;\n        root /var/www/html;\n        echo "Ceci n'"'"'est pas une page";\n    }' /etc/nginx/sites-available/default
-
-#Create a symlink to enable the site
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-
-sudo service nginx restart
-
+# script to install and setup nginx
+apt-get -y update
+apt-get -y install nginx
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+sed -i "/server_name _;/ a\\\trewrite ^/redirect_me https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/ permanent;" /etc/nginx/sites-available/default
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
+sed -i "/redirect_me/ a\\\terror_page 404 /custom_404.html;" /etc/nginx/sites-available/default
+service nginx restart
