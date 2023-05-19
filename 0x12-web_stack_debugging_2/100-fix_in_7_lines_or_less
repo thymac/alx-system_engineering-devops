@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# This script configures the container to run Nginx as the nginx user
-
-sed -i 's/user\s*[^;]*;/user nginx;/g' /etc/nginx/nginx.conf
-sed -i 's/listen\s*[^;]*;/listen 8080;/g' /etc/nginx/sites-available/default
-service nginx restart
-
+# script should run the whoami command under the user passed as an argument and make sure to try your script by passing different users
+pkill -f apache2
+chown nginx:nginx /etc/nginx/nginx.conf
+chmod 700 /etc/nginx/nginx.conf
+sed -i 's/80 default_server/8080 default_server/' /etc/nginx/sites-available/default
+sudo -u nginx service nginx start
