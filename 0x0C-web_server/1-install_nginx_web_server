@@ -1,7 +1,10 @@
-#!/usr/bin/env bash
-# script to install and setup nginx
-apt-get -y update
-apt-get -y install nginx
+#!/bin/bash
+# Install Nginx then create a custom HTML page with "Hello World!"
+
+apt-get update
+apt-get install -y nginx
 service nginx start
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
+sed -i 's/^\(listen\s*\)80;/\180;/g' /etc/nginx/sites-available/default
+echo "Hello World!" > /var/www/html/index.html
+service nginx restart
 
