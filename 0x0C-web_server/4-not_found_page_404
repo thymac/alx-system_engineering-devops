@@ -2,7 +2,7 @@
 # script to install and setup nginx
 apt-get -y update
 apt-get -y install nginx
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
+echo "Hello World!" > /var/www/html/index.html
 sed -i "/server_name _;/ a\\\trewrite ^/redirect_me https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/ permanent;" /etc/nginx/sites-available/default
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
 sed -i "/redirect_me/ a\\\terror_page 404 /custom_404.html;" /etc/nginx/sites-available/default
