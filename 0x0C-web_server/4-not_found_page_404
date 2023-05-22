@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# script to install and setup nginx
+# Setup nginx server to have a custom 404 page that contains the string Ceci n'est pas une page.
 
-apt-get -y update
-apt-get -y install nginx
 sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
 echo "Hello World!" > /var/www/html/index.html
 sudo sed -i '/server_name _;/a \        location /redirect_me {\n               return 301 https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/;\n        }' /etc/nginx/sites-available/default
