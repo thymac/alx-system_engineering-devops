@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 # script to install and setup nginx
+
 apt-get -y update
 apt-get -y install nginx
+sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
 echo "Hello World!" > /var/www/html/index.html
-sed -i "/server_name _;/ a\\\trewrite ^/redirect_me https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/ permanent;" /etc/nginx/sites-available/default
+sudo sed -i '/server_name _;/a \        location /redirect_me {\n               return 301 https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/;\n        }' /etc/nginx/sites-available/default
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
-sed -i "/redirect_me/ a\\\terror_page 404 /custom_404.html;" /etc/nginx/sites-available/default
-service nginx restart
+sudo sed -i "/redirect_me {\n               return 301 https://www.facebook.com/bwemty/videos/gta-5-pani-moments/662669848412794/;\n        }/ a \       location /error_page {\n                return 404 /custom_404.html;\n        };" /etc/nginx/sites-available/default
+sudo service nginx restart
+
