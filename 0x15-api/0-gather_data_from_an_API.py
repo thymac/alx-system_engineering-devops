@@ -1,43 +1,38 @@
 #!/usr/bin/python3
-"""
-Script that fetches information about a given employee's ID using an API.
-"""
-
+"""script that fetches info about a given employee's ID using an api"""
 import json
 import requests
 import sys
 
+
 base_url = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == "__main__":
+
     user_id = sys.argv[1]
 
-    # Get user info
-    user_url = f'{base_url}/users?id={user_id}'
+    user_url = '{}/users?id={}'.format(base_url, user_id)
+
     response = requests.get(user_url)
-    data = response.json()
+    data = response.text
+    data = json.loads(data)
+    name = data[0].get('name')
+    tasks_url = '{}/todos?userId={}'.format(base_url, user_id)
 
-    # Check if user exists
-    if not data:
-        print(f"No user found with ID: {user_id}")
-        sys.exit(1)
-
-    name = data[0]['name']
-
-    # Get user's TODO tasks
-    tasks_url = f'{base_url}/todos?userId={user_id}'
     response = requests.get(tasks_url)
-    tasks = response.json()
+    tasks = response.text
+    tasks = json.loads(tasks)
+
+    completed = 0
+    total_tasks = len(tasks)
 
     completed_tasks = []
     for task in tasks:
-        if task['completed']:
+        if task.get('completed'):
             completed_tasks.append(task)
+            completed += 1
 
-    completed = len(completed_tasks)
-    total_tasks = len(tasks)
-
-    print(f"Employee {name} is done with tasks({completed}/{total_tasks}):")
+    print("Employee {} is done with tasks({}/{}):"
+          .format(name, completed, total_tasks))
     for task in completed_tasks:
-        print(f"\t{task['title']}")
-
+        print("\t {}".format(task.get('title')))
