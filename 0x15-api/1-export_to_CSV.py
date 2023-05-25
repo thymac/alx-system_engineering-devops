@@ -33,9 +33,12 @@ def export_to_csv(employee_id):
         for task in tasks_data:
             task_completed = task.get('completed')
             task_title = task.get('title')
-            writer.writerow([employee_id, employee_username, task_completed,
-                task_title])
-
+            writer.writerow([
+                employee_id,
+                employee_username,
+                task_completed,
+                task_title
+            ])
 
 if __name__ == '__main__':
     if len(argv) != 2:
