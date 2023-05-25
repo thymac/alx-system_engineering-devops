@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""
+Exports all tasks from all employees to JSON format
+"""
 import json
 import requests
 
