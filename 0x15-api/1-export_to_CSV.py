@@ -12,8 +12,10 @@ def export_to_csv(employee_id):
     """
     Exports employee tasks to CSV file
     """
-    user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(employee_id)
-    tasks_url = 'https://jsonplaceholder.typicode.com/todos?userId={}'.format(employee_id)
+    user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(
+            employee_id)
+    tasks_url = 'https://jsonplaceholder.typicode.com/todos?userId={}'.format(
+            employee_id)
 
     user_response = requests.get(user_url)
     tasks_response = requests.get(tasks_url)
@@ -31,8 +33,8 @@ def export_to_csv(employee_id):
         for task in tasks_data:
             task_completed = task.get('completed')
             task_title = task.get('title')
-            writer.writerow([employee_id, employee_username, task_completed, task_title])
-
+            writer.writerow([employee_id, employee_username, task_completed,
+                task_title])
 
 
 if __name__ == '__main__':
@@ -42,4 +44,3 @@ if __name__ == '__main__':
 
     employee_id = argv[1]
     export_to_csv(employee_id)
-
