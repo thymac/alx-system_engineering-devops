@@ -4,6 +4,6 @@
 sudo apt-get update
 sudo apt-get install nginx -y
 sudo ufw allow 'Nginx HTTP'
-sudo sed -i '/location \/ {/a \			root /var/www/html;\n\t\tindex index.html;' /etc/nginx/sites-available/default
+sudo sed -i '/location \/ {/a \		root /var/www/html;\n\t\tindex index.html;' /etc/nginx/sites-available/default
 echo "Hello World!" | sudo tee /var/www/html/index.html
 sudo service nginx start
