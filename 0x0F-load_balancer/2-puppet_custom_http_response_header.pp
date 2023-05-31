@@ -10,7 +10,7 @@ package { 'nginx':
 
 file { '/etc/nginx/nginx.conf':
   ensure   => present,
-  content  => "http {\n\tadd_header Y-Served-By \"${hostname}\";",
+  content  => "http {\n\tadd_header X-Served-By \"${hostname}\";",
   match    => 'http {',
   notify   => Service['nginx'],
 }
