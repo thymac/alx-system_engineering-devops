@@ -15,8 +15,8 @@ HAPROXY_LB_CONFIG=\
 #--$DOMAIN_NAME-params-begin--
 backend $DOMAIN_NAME-backend
 	balance roundrobin
-    server 166162-web-01 52.3.241.147:80 check
-    server 166162-web-02 100.25.163.229:80 check
+	server 166162-web-01 52.3.241.147:80 check
+	server 166162-web-02 100.25.163.229:80 check
 
 frontend $DOMAIN_NAME-frontend
 	bind *:80
@@ -24,10 +24,10 @@ frontend $DOMAIN_NAME-frontend
 
 	default_backend $DOMAIN_NAME-backend
 
-iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 8080 -j ACCEPT
-iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
-iptables -A INPUT -j DROP
+ufw deny all
+ufw allow 80
+ufw allow 8080
+ufw allow 22
 #--$DOMAIN_NAME-params-end--
 "
 
