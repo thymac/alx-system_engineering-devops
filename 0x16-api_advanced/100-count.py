@@ -68,4 +68,3 @@ def count_occurrences(word_list, hot_list):
     sorted_words = sorted(word_count.items(), key=lambda x: (-x[1], x[0]))
     for word, count in sorted_words:
         print(word + ": " + str(count))
-

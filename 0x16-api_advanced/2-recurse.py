@@ -45,4 +45,3 @@ def recurse(subreddit, hot_list=[], n=0, after=None):
 
     if n == 0:
         return hot_list
-
