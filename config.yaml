@@ -1,0 +1,5 @@
+# config.yaml
+DD_SITE: datadoghq.com
+DD_API_KEY: 1a5828aa3719cfa0e56bb4a9c42317c5
+DD_APP_KEY: eeb45007eacc4b22c4241aa32ca5189e3adbf35b
+
