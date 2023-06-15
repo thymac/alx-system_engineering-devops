@@ -1,7 +1,5 @@
-# Fixing the issue of failed requests by modifying the ULIMIT in the /etc/default/nginx file.
-
+#change ULIMIT
 exec { 'Change ULIMIT':
-  command => 'sudo sed -i "s/^ULIMIT=\"-n = 15\"/ULIMIT=\"-n 2500\"/" /etc/default/nginx && sudo service nginx restart',
-  path    => '/bin:/usr/bin:/usr/sbin:/sbin',
+  command  => 'echo "ULIMIT=\"-n 25000\"" > /etc/default/nginx && sudo service nginx restart',
+  provider => shell,
 }
-
