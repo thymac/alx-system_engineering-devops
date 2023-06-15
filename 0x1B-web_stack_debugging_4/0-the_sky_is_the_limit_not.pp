@@ -2,6 +2,6 @@
 
 exec { 'Change ULIMIT':
   command => 'sudo sed -i "s/^ULIMIT=\"-n = 15\"/ULIMIT=\"-n 2500\"/" /etc/default/nginx && sudo service nginx restart',
-  path    => '/bin:/usr/bin:/usr/sbin:/sbin',
+  path    => shell,
 }
 
